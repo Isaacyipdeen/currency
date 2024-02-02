@@ -1,0 +1,25 @@
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#converter-container {
+    text-align: center;
+}
+
+#amount {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+}
+
+#converted-amount {
+    margin-top: 10px;
+    font-size: 18px;
+}
