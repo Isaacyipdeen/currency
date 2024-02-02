@@ -8,51 +8,27 @@ const APP_STATIC_RESOURCES = [
     "/icon.png",
   ];
 
+  self.addEventListener("install", installEvent => {
+    installEvent.waitUntil(
+      caches.open(staticDevCoffee).then(cache => {
+        cache.addAll(assets);
+      })
+    );
+  });
   
-  self.addEventListener("install", (event) => {
-    event.waitUntil(
-      (async () => {
-        const cache = await caches.open(CACHE_NAME);
-        cache.addAll(APP_STATIC_RESOURCES);
-      })(),
+  self.addEventListener("fetch", fetchEvent => {
+    fetchEvent.respondWith(
+      caches.match(fetchEvent.request).then(res => {
+        return res || fetch(fetchEvent.request);
+      })
     );
   });
 
-  self.addEventListener("activate", (event) => {
-    event.waitUntil(
-      (async () => {
-        const names = await caches.keys();
-        await Promise.all(
-          names.map((name) => {
-            if (name !== CACHE_NAME) {
-              return caches.delete(name);
-            }
-          }),
-        );
-        await clients.claim();
-      })(),
-    );
-  });
-
-  self.addEventListener("fetch", (event) => {
-    // when seeking an HTML page
-    if (event.request.mode === "navigate") {
-      // Return to the index.html page
-      event.respondWith(caches.match("/"));
-      return;
-    }
-  
-    // For every other request type
-    event.respondWith(
-      (async () => {
-        const cache = await caches.open(CACHE_NAME);
-        const cachedResponse = await cache.match(event.request.url);
-        if (cachedResponse) {
-          // Return the cached response if it's available.
-          return cachedResponse;
-        }
-        // Respond with a HTTP 404 response status.
-        return new Response(null, { status: 404 });
-      })(),
-    );
-  });
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("/serviceWorker.js")
+        .then(res => console.log("service worker registered"))
+        .catch(err => console.log("service worker not registered", err));
+    });
+  }
