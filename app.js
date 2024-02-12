@@ -25,7 +25,15 @@ document.addEventListener('DOMContentLoaded', function () {
     openCameraBtn.addEventListener('click', async () => {
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
-            const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
+            const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+            let backCamera;
+            for (const device of videoDevices) {
+                if (device.label.toLowerCase().includes('back')) {
+                    backCamera = device;
+                    break;
+                }
+            }
 
             if (backCamera) {
                 const stream = await navigator.mediaDevices.getUserMedia({
