@@ -19,20 +19,13 @@ async function convertCurrency() {
 }
 
 
-let startY;
-let isRefreshing = false;
-
 document.addEventListener('DOMContentLoaded', function () {
     const openCameraBtn = document.getElementById('openCameraBtn');
     const cameraPreview = document.getElementById('cameraPreview');
 
     openCameraBtn.addEventListener('click', async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: 'user', // Use the back camera
-                }
-            });
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
         } catch (error) {
@@ -40,25 +33,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-    document.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-        isRefreshing = false;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-        const currentY = e.touches[0].clientY;
-
-        if (currentY - startY > 100 && !isRefreshing) {
-            isRefreshing = true;
-            // Add your refresh logic here
-            location.reload(); // For simplicity, just reload the page
-        }
-    });
-
-    document.addEventListener('touchend', () => {
-        isRefreshing = false;
-    });
-});
-
 
