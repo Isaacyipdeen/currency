@@ -18,41 +18,6 @@ async function convertCurrency() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const openCameraBtn = document.getElementById('openCameraBtn');
-    const cameraPreview = document.getElementById('cameraPreview');
-
-    openCameraBtn.addEventListener('click', async () => {
-        try {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-
-            let backCamera;
-            for (const device of videoDevices) {
-                if (device.label.toLowerCase().includes('back')) {
-                    backCamera = device;
-                    break;
-                }
-            }
-
-            if (backCamera) {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        deviceId: { exact: backCamera.deviceId },
-                    },
-                });
-                cameraPreview.srcObject = stream;
-                cameraPreview.style.display = 'block';
-            } else {
-                console.error('Back camera not found.');
-            }
-        } catch (error) {
-            console.error('Error accessing camera:', error);
-        }
-    });
-});
-
-
 
 let startY;
 let isRefreshing = false;
@@ -63,13 +28,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     openCameraBtn.addEventListener('click', async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'user', // Use the back camera
+                }
+            });
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
     });
+});
 
     document.addEventListener('touchstart', (e) => {
         startY = e.touches[0].clientY;
@@ -90,3 +60,5 @@ document.addEventListener('DOMContentLoaded', function () {
         isRefreshing = false;
     });
 });
+
+
