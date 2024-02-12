@@ -17,3 +17,18 @@ async function convertCurrency() {
         console.error('Error fetching conversion data:', error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const openCameraBtn = document.getElementById('openCameraBtn');
+    const cameraPreview = document.getElementById('cameraPreview');
+
+    openCameraBtn.addEventListener('click', async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            cameraPreview.srcObject = stream;
+            cameraPreview.style.display = 'block';
+        } catch (error) {
+            console.error('Error accessing camera:', error);
+        }
+    });
+});

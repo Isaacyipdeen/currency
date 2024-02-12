@@ -16,24 +16,13 @@
         <input type="number" id="amount" placeholder="Enter amount" oninput="convertCurrency()" autocomplete="off">
         <div id="converted-amount"></div>
     </div>
+    
+
+    <button id="openCameraBtn">Open Camera</button>
+    <video id="cameraPreview" autoplay playsinline style="display: none;"></video>
 
     <script src="app.js"></script>
-<!--
-    <script>
-        if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").then(
-    (registration) => {
-      console.log("Service worker registration successful:", registration);
-    },
-    (error) => {
-      console.error(`Service worker registration failed: ${error}`);
-    },
-  );
-} else {
-  console.error("Service workers are not supported.");
-}
 
-    </script>
--->
+
 </body>
 </html>
