@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     openCameraBtn.addEventListener('click', async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment', // Use the back camera
+                }
+            });
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
         } catch (error) {
@@ -32,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 
 
 let startY;
