@@ -24,13 +24,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     openCameraBtn.addEventListener('click', async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: 'environment', // Use the back camera
-                }
-            });
-            cameraPreview.srcObject = stream;
-            cameraPreview.style.display = 'block';
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const backCamera = devices.find(device => device.kind === 'videoinput' && device.label.toLowerCase().includes('back'));
+
+            if (backCamera) {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        deviceId: { exact: backCamera.deviceId },
+                    },
+                });
+                cameraPreview.srcObject = stream;
+                cameraPreview.style.display = 'block';
+            } else {
+                console.error('Back camera not found.');
+            }
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
