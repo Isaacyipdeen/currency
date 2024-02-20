@@ -81,8 +81,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var convertedAmount = amount * rate;
 
-            var convertedAmountDiv = document.getElementById("converted-amount");
-            convertedAmountDiv.textContent = amount + " THB is approximately " + convertedAmount.toFixed(2) + " SGD";
+            // Display the converted currency on the overlay
+            overlay.innerText = amount + " THB is approximately " + convertedAmount.toFixed(2) + " SGD";
+
         } catch (error) {
             console.error('Error fetching conversion data:', error);
         }
