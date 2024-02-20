@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const openCameraBtn = document.getElementById('openCameraBtn');
     const cameraPreview = document.getElementById('cameraPreview');
 
-    var facingMode = "user";
+    var facingMode = "environment";
 
     openCameraBtn.addEventListener('click', async () => {
         try {
