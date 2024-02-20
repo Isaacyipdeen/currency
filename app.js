@@ -62,26 +62,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function detectNumber() {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = cameraPreview.videoWidth;
-        canvas.height = cameraPreview.videoHeight;
-
-        // Draw the current frame on the canvas
-        context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
-
-        // Extract pixel data
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const pixels = imageData.data;
-
-        // Simple example: Sum all pixel values (brightness)
-        const sum = pixels.reduce((acc, value) => acc + value, 0);
-
-        // Display the detected number on the overlay
-        overlay.textContent = "Detected Number: " + sum;
-
-        // Clear the canvas
-        context.clearRect(0, 0, canvas.width, canvas.height);
+    async function detectNumber() {
+        Tesseract.recognize(
+            cameraPreview,
+            'eng', // Language code, e.g., 'eng' for English
+            { logger: info => console.log(info) }
+        ).then(({ data: { text } }) => {
+            // Display the detected number on the overlay
+            overlay.textContent = "Detected Number: " + text.trim();
+        });
     }
 });

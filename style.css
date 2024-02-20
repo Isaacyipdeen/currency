@@ -40,16 +40,19 @@ h1 {
 }
 
 #cameraPreview {
-    width: 100vw;
+
+    display: none;
+    /*width: 100vw;
     height: 100vh;
     object-fit: cover;
+    */
 }
 
-.overlay {
+#overlay {
     position: fixed;
     top: 10px;
     left: 10px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 5px;
     font-size: 16px;
