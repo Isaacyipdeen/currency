@@ -23,9 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const openCameraBtn = document.getElementById('openCameraBtn');
     const cameraPreview = document.getElementById('cameraPreview');
 
+    var facingMode = "user";
+
     openCameraBtn.addEventListener('click', async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: {facingMode: user }});
+            const stream = await navigator.mediaDevices.getUserMedia({ video: {facingMode: facingMode }});
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
         } catch (error) {
