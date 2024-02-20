@@ -50,20 +50,38 @@ document.addEventListener('DOMContentLoaded', function () {
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
 
-            // Start tracking numbers in the camera feed
-            tracking.track('#cameraPreview', new tracking.NumberColorTracker()).on('track', function (event) {
-                if (event.data.length === 0) return;
-
-                // Assuming the first detected number is the amount to display
-                const detectedNumber = event.data[0].color;
-
-                // Display the detected number on the overlay
-                overlay.textContent = "Detected Number: " + detectedNumber;
-
+            // Wait for the video to be loaded and start processing frames
+            cameraPreview.addEventListener('loadeddata', function () {
+                setInterval(() => {
+                    detectNumber();
+                }, 1000); // Adjust the interval as needed
             });
 
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
     });
+
+    function detectNumber() {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = cameraPreview.videoWidth;
+        canvas.height = cameraPreview.videoHeight;
+
+        // Draw the current frame on the canvas
+        context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+
+        // Extract pixel data
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels = imageData.data;
+
+        // Simple example: Sum all pixel values (brightness)
+        const sum = pixels.reduce((acc, value) => acc + value, 0);
+
+        // Display the detected number on the overlay
+        overlay.textContent = "Detected Number: " + sum;
+
+        // Clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
 });
