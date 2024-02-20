@@ -50,26 +50,20 @@ document.addEventListener('DOMContentLoaded', function () {
             cameraPreview.srcObject = stream;
             cameraPreview.style.display = 'block';
 
-            // Wait for the video to be loaded and start processing frames
-            cameraPreview.addEventListener('loadeddata', function () {
-                setInterval(() => {
-                    detectNumber();
-                }, 1000); // Adjust the interval as needed
+            // Start tracking digits in the camera feed
+            tracking.track('#cameraPreview', new tracking.DigitsTracker()).on('track', function (event) {
+                if (event.data.length === 0) return;
+
+                // Assuming the first detected digit is the number
+                const detectedNumber = event.data[0].color;
+
+                // Display the detected number on the overlay
+                overlay.textContent = "Detected Number: " + detectedNumber;
+
             });
 
         } catch (error) {
             console.error('Error accessing camera:', error);
         }
     });
-
-    async function detectNumber() {
-        Tesseract.recognize(
-            cameraPreview,
-            'eng', // Language code, e.g., 'eng' for English
-            { logger: info => console.log(info) }
-        ).then(({ data: { text } }) => {
-            // Display the detected number on the overlay
-            overlay.textContent = "Detected Number: " + text.trim();
-        });
-    }
 });
