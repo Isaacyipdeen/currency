@@ -40,9 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const openCameraBtn = document.getElementById('openCameraBtn');
     const cameraPreview = document.getElementById('cameraPreview');
-    const overlay = document.createElement('div');
-    overlay.classList.add('overlay');
-    document.body.appendChild(overlay);
+    const overlay = document.getElementById('overlay');
 
     var facingMode = "environment";
 
@@ -82,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var convertedAmount = amount * rate;
 
             // Display the converted currency on the overlay
-            overlay.innerText = amount + " THB is approximately " + convertedAmount.toFixed(2) + " SGD";
+            overlay.textContent = amount + " THB is approximately " + convertedAmount.toFixed(2) + " SGD";
 
         } catch (error) {
             console.error('Error fetching conversion data:', error);
